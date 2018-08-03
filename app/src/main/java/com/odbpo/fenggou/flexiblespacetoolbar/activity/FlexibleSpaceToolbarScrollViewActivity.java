@@ -32,7 +32,7 @@ import com.odbpo.fenggou.flexiblespacetoolbar.scroll.ScrollState;
 import com.odbpo.fenggou.flexiblespacetoolbar.scroll.ScrollUtils;
 import com.odbpo.fenggou.flexiblespacetoolbar.util.CommonUtil;
 
-public class FlexibleSpaceToolbarScrollViewActivity extends BaseActivity implements ObservableScrollViewCallbacks {
+public class FlexibleSpaceToolbarScrollViewActivity extends BaseActivity implements ObservableScrollViewCallbacks,View.OnClickListener {
 
     private ImageView ivBack;
     private View mFlexibleSpaceView;
@@ -53,16 +53,13 @@ public class FlexibleSpaceToolbarScrollViewActivity extends BaseActivity impleme
         }
 
         ivBack = (ImageView) findViewById(R.id.iv_back);
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(FlexibleSpaceToolbarScrollViewActivity.this, "back", Toast.LENGTH_SHORT).show();
-            }
-        });
+        ivBack.setOnClickListener(this);
 
         mFlexibleSpaceView = findViewById(R.id.flexible_space);
         mTitleView = (TextView) findViewById(R.id.title);
+        mTitleView.setOnClickListener(this);
         tvDaDa = (TextView) findViewById(R.id.tv_dada);
+        tvDaDa.setOnClickListener(this);
 //        mTitleView.setText(getTitle());
         mTitleView.setText("订单状态");
         tvDaDa.setText("达达状态");
@@ -74,7 +71,7 @@ public class FlexibleSpaceToolbarScrollViewActivity extends BaseActivity impleme
 
         mFlexibleSpaceHeight = getResources().getDimensionPixelSize(R.dimen.flexible_space_height);
         //System.out.println("actionbar:" + getActionBarSize());//168
-        System.out.println("dp:" + CommonUtil.px2dip(this, 168));//56
+        //System.out.println("dp:" + CommonUtil.px2dip(this, 168));//56
         int flexibleSpaceAndToolbarHeight = mFlexibleSpaceHeight + CommonUtil.dip2px(this, 45);
 
         findViewById(R.id.body).setPadding(0, flexibleSpaceAndToolbarHeight, 0, 0);
@@ -105,7 +102,7 @@ public class FlexibleSpaceToolbarScrollViewActivity extends BaseActivity impleme
 
     private void updateFlexibleSpaceText(final int scrollY) {
         //System.out.println("scrollY:" + scrollY);
-        //translationX和translationY：这些属性控制View所在的位置，作为其布局容器设置的坐标left和top坐标。
+        //平移
         ViewHelper.setTranslationY(mFlexibleSpaceView, -scrollY);
         int adjustedScrollY = (int) ScrollUtils.getFloat(scrollY, 0, mFlexibleSpaceHeight);
         float maxScale = (float) (mFlexibleSpaceHeight - mToolbarView.getHeight()) / mToolbarView.getHeight();
@@ -123,5 +120,20 @@ public class FlexibleSpaceToolbarScrollViewActivity extends BaseActivity impleme
         System.out.println("x:" + titleTranslationY);
         ViewHelper.setTranslationX(mTitleView, -titleTranslationY * 3);
         ViewHelper.setTranslationY(tvDaDa, titleTranslationY * 7 / 6);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_back:
+                Toast.makeText(FlexibleSpaceToolbarScrollViewActivity.this, "back", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.title:
+                Toast.makeText(FlexibleSpaceToolbarScrollViewActivity.this, "title", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_dada:
+                Toast.makeText(FlexibleSpaceToolbarScrollViewActivity.this, "tv_dada", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 }
